@@ -53,15 +53,35 @@ class mc4wp_extra {
 	}
 
 	public function mc4wp_extra_hooks() {
-		if (isset(get_option('mc4wp_extra')["woocommercetag"]) && !empty(get_option('mc4wp_extra')["woocommercetag"])) {
-		add_filter( 'mc4wp_integration_woocommerce_subscriber_data', function(MC4WP_MailChimp_Subscriber $subscriber) {
-			$tags = explode(',', get_option('mc4wp_extra')["woocommercetag"]);
-			foreach($tags as $tag) {
-				$subscriber->tags[] = trim($tag);
+		$integrations_to_add_tag_to = array('affiliatewp', 'buddypress', 'contact-form-7', 'custom', 'easy-digital-downloads', 'events-manager', 'gravity-forms', 'memberpress', 'ninja-forms', 'woocommerce', 'wp-comment-form', 'wp-registration-form', 'wpforms');
+
+
+		foreach ($integrations_to_add_tag_to as $integration) {
+			if (isset(get_option('mc4wp_extra')[$integration.'tag']) && !empty(get_option('mc4wp_extra')[$integration.'tag'])) {
+				add_filter( 'mc4wp_integration_'.$integration.'_subscriber_data', function(MC4WP_MailChimp_Subscriber $subscriber) use ($integration) {
+					$tags = explode(',', get_option('mc4wp_extra')[$integration.'tag']);
+					foreach($tags as $tag) {
+						$subscriber->tags[] = trim($tag);
+					}
+					return $subscriber;
+				});
 			}
-			return $subscriber;
-		 });
 		}
+
+
+
+
+		 //Need to be repeated for each integration method
+
+		add_filter( 'mc4wp_integration_subscriber_data', function(MC4WP_MailChimp_Subscriber $subscriber) {
+
+		$subscriber->tags[] = 'My tag';
+
+
+		return $subscriber;
+		});
+
+
 	}
 
 }
