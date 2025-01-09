@@ -1,8 +1,7 @@
 <?php
 //add tags option to integrations
-$integrations_to_add_tag_to = array('affiliatewp', 'buddypress', 'contact-form-7', 'custom', 'easy-digital-downloads', 'events-manager', 'gravity-forms', 'memberpress', 'ninja-forms', 'woocommerce', 'wp-comment-form', 'wp-registration-form', 'wpforms');
 
-if (in_array($integration->slug, $integrations_to_add_tag_to)) {
+if (in_array($integration->slug, $this->integrations_to_add_tag_to)) {
     ?>
     <table class="form-table">
     <?php
