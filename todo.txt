@@ -1,9 +1,11 @@
-- Reuse integration tag code so it can be applied to an array of integrations
+- tag per cf7 form id (in cf7 form settings, or as wpcf7_add_form_tag or...)
 
 - Allow mapping MC fields to WooCommerce checkout address https://github.com/ibericode/mailchimp-for-wordpress/blob/main/sample-code-snippets/integrations/woocommerce/send-billing-fields.php
 - Same for Birthday fields
-- Add to group (very similar to tag, but show list of groups) https://github.com/ibericode/mailchimp-for-wordpress/blob/main/sample-code-snippets/integrations/woocommerce/add-to-grouping.php
-- Send coupon to selected field
+
+- Add to group (very similar to tag, but need to show list of groups) https://github.com/ibericode/mailchimp-for-wordpress/blob/main/sample-code-snippets/integrations/woocommerce/add-to-grouping.php
+
+- Send (last used) coupon to selected field or set coupon name as tag?
 
 
 - look at premium ecommerce snippets
