@@ -15,10 +15,10 @@ $config = array(
             <input 
                 type="text" 
                 class="widefat" 
-                id="mc4wp_extra_woocommerce_tag" 
-                name="mc4wp_extra_woocommerce_tag" 
+                id="mc4wp_extra[woocommercetag]" 
+                name="mc4wp_extra[woocommercetag]" 
                 placeholder="Example: My tag, another tag"
-                value="<?php echo esc_attr(get_option('mc4wp_extra_woocommerce_tag')); ?>" 
+                value="<?php echo esc_attr(get_option('mc4wp_extra')["woocommercetag"]); ?>" 
             />
             <p class="description"><?php echo esc_html__('The listed tags will be applied to all subscribers added or updated by this integration. Separate multiple values with a comma.', 'mc4wp_extra'); ?></p>
             </td>

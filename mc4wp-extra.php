@@ -37,7 +37,7 @@ class mc4wp_extra {
 	}
 
 	public function mc4wp_extra_register_settings() {
-    	register_setting('mc4wp_integrations_settings', 'mc4wp_extra_woocommerce_tag');
+    	register_setting('mc4wp_integrations_settings', 'mc4wp_extra');
 	}
 
 	public function mc4wp_extra_admin_after_integration_settings(MC4WP_Integration $integration, $opts)
@@ -50,9 +50,9 @@ class mc4wp_extra {
 
 	public function mc4wp_extra_hooks() {
 
-		if (null !== get_option('mc4wp_extra_woocommerce_tag') && !empty(get_option('mc4wp_extra_woocommerce_tag'))) {
+		if (null !== get_option('mc4wp_extra')["woocommercetag"] && !empty(get_option('mc4wp_extra')["woocommercetag"])) {
 		add_filter( 'mc4wp_integration_woocommerce_subscriber_data', function(MC4WP_MailChimp_Subscriber $subscriber) {
-			$tags = explode(',', get_option('mc4wp_extra_woocommerce_tag'));
+			$tags = explode(',', get_option('mc4wp_extra')["woocommercetag"]);
 			foreach($tags as $tag) {
 				$subscriber->tags[] = trim($tag);
 			}
