@@ -42,6 +42,10 @@ class mc4wp_extra {
 
 	public function mc4wp_extra_admin_after_integration_settings(MC4WP_Integration $integration, $opts)
 	{
+		//add the option to set tags per integration method 
+		include __DIR__ . '/integrationtags.php';
+
+		//add further extra options if available
 		$file = __DIR__ . '/' . $integration->slug . '.php';
 		if (file_exists($file)) {
 			include $file;
@@ -49,8 +53,7 @@ class mc4wp_extra {
 	}
 
 	public function mc4wp_extra_hooks() {
-
-		if (null !== get_option('mc4wp_extra')["woocommercetag"] && !empty(get_option('mc4wp_extra')["woocommercetag"])) {
+		if (isset(get_option('mc4wp_extra')["woocommercetag"]) && !empty(get_option('mc4wp_extra')["woocommercetag"])) {
 		add_filter( 'mc4wp_integration_woocommerce_subscriber_data', function(MC4WP_MailChimp_Subscriber $subscriber) {
 			$tags = explode(',', get_option('mc4wp_extra')["woocommercetag"]);
 			foreach($tags as $tag) {
