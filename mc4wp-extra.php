@@ -41,7 +41,8 @@ class mc4wp_extra {
 	}
 
 	public function mc4wp_extra_register_settings() {
-    	register_setting('mc4wp_integrations_settings', 'mc4wp_extra');
+    	register_setting('mc4wp_integrations_settings', 'mc4wp_extra_integrations');
+		register_setting('mc4wp_settings', 'mc4wp_extra');
 	}
 
 	public function mc4wp_extra_admin_after_integration_settings(MC4WP_Integration $integration, $opts)
@@ -60,12 +61,31 @@ class mc4wp_extra {
 		}
 	}
 
-	public function mc4wp_extra_hooks() {
+	public function email_api_error_setting() {
+		include __DIR__ . '/email-api-error.php';
+	}
 
+	public function mc4wp_extra_hooks() {
+		//add API error email to Other settings
+		add_action('mc4wp_admin_other_settings', array( $this, 'email_api_error_setting' ), 91);
+		//send error emails if email is set
+		if (isset(get_option('mc4wp_extra')['apilogemail']) && !empty(get_option('mc4wp_extra')['apilogemail'])) {
+			add_action( 'mc4wp_form_api_error', function( $form, $error_message ) {
+				// email variables
+				$email_to = get_option('mc4wp_extra')['apilogemail'];
+				$email_subject = 'MC4WP Form API failure on ' . get_bloginfo('name') . ' (' . get_bloginfo('url') . ')';
+				$email_message = sprintf( 'Form %d encountered a MailChimp API error: %s', $form->ID, $error_message );
+				// send the email
+				wp_mail( $email_to, $email_subject, $email_message );
+			}, 10, 2 );
+		}
+
+
+		//add tags per integration
 		foreach ($this->integrations_to_add_tag_to as $integration) {
-			if (isset(get_option('mc4wp_extra')[$integration.'tag']) && !empty(get_option('mc4wp_extra')[$integration.'tag'])) {
+			if (isset(get_option('mc4wp_extra_integrations')[$integration.'tag']) && !empty(get_option('mc4wp_extra_integrations')[$integration.'tag'])) {
 				add_filter( 'mc4wp_integration_'.$integration.'_subscriber_data', function(MC4WP_MailChimp_Subscriber $subscriber) use ($integration) {
-					$tags = explode(',', get_option('mc4wp_extra')[$integration.'tag']);
+					$tags = explode(',', get_option('mc4wp_extra_integrations')[$integration.'tag']);
 					foreach($tags as $tag) {
 						$subscriber->tags[] = trim($tag);
 					}
@@ -73,21 +93,21 @@ class mc4wp_extra {
 				});
 			}
 		}
-
+		//add whitelisted tags per integration that can be posted
 		foreach ($this->integrations_to_add_tag_whitelist_to as $integration) {
-			if (isset(get_option('mc4wp_extra')[$integration.'tag']) && !empty(get_option('mc4wp_extra')[$integration.'tag'])) {
+			if (isset(get_option('mc4wp_extra_integrations')[$integration.'tag']) && !empty(get_option('mc4wp_extra_integrations')[$integration.'tag'])) {
 				add_filter( 'mc4wp_integration_'.$integration.'_subscriber_data', function(MC4WP_MailChimp_Subscriber $subscriber) use ($integration) {
 					
 				foreach($_POST as $key=>$value) {
 					if (strpos($key, 'mc4wp_tag_') === 0) {
 						if (is_array($value)) {
 							foreach ($value as $tag) {
-								if (in_array($tag, array_map('trim', explode(',', get_option('mc4wp_extra')[$integration.'tag_whitelist'])))) {
+								if (in_array($tag, array_map('trim', explode(',', get_option('mc4wp_extra_integrations')[$integration.'tag_whitelist'])))) {
 									$subscriber->tags[] = trim($tag);
 								}
 							}
 						} else {
-							if (in_array($value, array_map('trim', explode(',', get_option('mc4wp_extra')[$integration.'tag_whitelist'])))) {
+							if (in_array($value, array_map('trim', explode(',', get_option('mc4wp_extra_integrations')[$integration.'tag_whitelist'])))) {
 								$subscriber->tags[] = trim($value);
 							}
 						}
