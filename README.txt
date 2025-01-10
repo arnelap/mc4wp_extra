@@ -10,19 +10,28 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Adds extra functionality to the Mailchimp for Wordpress plugin.
-This plugin is created by a third party, not by Mailchimp for Wordpress, ibericode or Mailchimp. 
+This plugin is created by a third party, not by Mailchimp for Wordpress, ibericode or Mailchimp.
+
+Most features in this plugin are based on [sample code snippets](https://github.com/ibericode/mailchimp-for-wordpress/tree/main/sample-code-snippets) that are provided by ibericode / Mailchimp for Wordpress.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Adds the following functionality to the MC4WP (Mailchimp for Wordpress) plugin:
+
+- Adding a tag per integration method
+- Allowing to set whitelisted tags via form fields in integrations
+- Receive email notifications when there is an API error from a MC4WP form
 
 
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= How to use a whitelisted tag in a ContactForm 7 form or Custom integration =
 
-An answer to that question.
+First make sure the tag you want to set is listed in the "Whitelisted tags" field under MC4WP > Integrations > Contact Form 7 or Custom.
+Then you can add a field to the form, this can be any field type, such as a checkboxes, radio buttons, drop-down menu, etc. 
+Make sure the field name starts with mc4wp_tag_ and the value of the field is the tag you want to set.
+
 
 = What about foo bar? =
 
@@ -30,14 +39,10 @@ Answer to foo bar dilemma.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Tags and whitelisted tags per integration method
+2. Notification email when a MC4WP Form API error occurs 
 
 == Changelog ==
 
 = 1.0 =
-* A change since the previous version.
-* Another change.
+* Initial public release
